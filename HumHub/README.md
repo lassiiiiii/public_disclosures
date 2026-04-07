@@ -8,4 +8,4 @@ Homepage: https://www.humhub.com/
 Security policy: https://github.com/humhub/humhub/security
 
 ## Personal experience
-Quick to respond and fix the reported vulnerabilities. Overall a pleasant experience, their contact person was lovely. Minor annoyance with a disagreement about severity score and some CVE/advisory filings, but nothing big.
+Quick to respond and fix the reported vulnerabilities. Overall a pleasant experience, their contact person was lovely. Minor disagreements about severity score and some CVE/advisory filings, but nothing big.
