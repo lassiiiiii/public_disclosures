@@ -1,5 +1,7 @@
 # GHSA-hx69-px7q-rf37
 
+## Stored XSS in Messenger (mail) module
+
 https://github.com/humhub/mail/security/advisories/GHSA-hx69-px7q-rf37
 
 ## Notes
@@ -14,5 +16,5 @@ Basic stored XSS. No CVE, reasoning from HumHub:
 
 - 04.03.2026: Produced report and sent to security@humhub.com , response gotten almost instantly
 
-- 06.03.2026: Issue fixed and released in HumHub Calendar module `3.3.9`, verified that the fix worked
+- 06.03.2026: Issue fixed and released in HumHub Messenger (mail) module `3.3.9`, verified that the fix worked
 

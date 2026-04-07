@@ -1,5 +1,7 @@
 # GHSA-jr53-752q-pccw
 
+## Stored XSS in Tasks module checklist
+
 https://github.com/humhub/tasks/security/advisories/GHSA-jr53-752q-pccw
 
 ## Notes
