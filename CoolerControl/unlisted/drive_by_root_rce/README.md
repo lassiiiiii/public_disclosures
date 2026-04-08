@@ -4,7 +4,9 @@ Chaining together CVE-2026-5300 (unauth functionality), CVE-2026-5301 (stored XS
 
 Had a lot of fun researching this. Major browsers allowing 3rd party requests to localhost by default is bonkers!  
 
-Video: TODO
+PoC video:
+
+[poc_rce.webm](https://github.com/user-attachments/assets/6c722f83-615a-4c8d-9efa-57e71330ae46)
 
 ## Notes
 
