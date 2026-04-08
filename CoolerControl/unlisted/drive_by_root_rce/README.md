@@ -1,6 +1,6 @@
 # Full exploit chain, drive-by root RCE
 
-Chaining together CVE-2026-5300 (unauth functionality), CVE-2026-5301 (stored XSS), and CVE-2026-5208 (command injection) to achieve full root pwn by having the user navigate to a malicious website ^___^
+Chaining together [CVE-2026-5300](../../CVE-2026-5300) (unauth functionality), [CVE-2026-5301](../../CVE-2026-5301) (stored XSS), and [CVE-2026-5208](../../CVE-2026-5208) (command injection) to achieve full root pwn by having the user navigate to a malicious website ^___^
 
 Had a lot of fun researching this. Major browsers allowing 3rd party requests to localhost by default is bonkers!  
 
